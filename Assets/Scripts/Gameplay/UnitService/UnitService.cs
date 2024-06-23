@@ -9,6 +9,7 @@ public class UnitService
         public UnitRole UnitRole;
         public List<IHealthChanged> HealthChangedCollection;
         public List<IDeath> DeathCollection;
+        public bool IsDead;
     }
 
     private readonly HealthFactory _healthFactory = new();
@@ -32,6 +33,8 @@ public class UnitService
         _units.Add(unitView, unit);
     }
 
+    public void Remove(IUnitView view) => _units.Remove(view);
+
     public bool IsExist(IUnitView view) => _units.ContainsKey(view);
 
     public UnitRole GetRole(IUnitView view) => _units[view].UnitRole;
@@ -43,6 +46,11 @@ public class UnitService
         var health = unit.Health;
 
         health.ReceiveHit(context.Damage);
+
+        if (unit.IsDead)
+        {
+            return;
+        }
 
         HealthChangedContext healthChangedContext = new(context, CalculateCurrentPercentage(health));
 
@@ -57,7 +65,7 @@ public class UnitService
         foreach (var death in unit.DeathCollection)
             death.OnDeath(context.Source);
 
-        _units.Remove(receiver);
+        unit.IsDead = true;
     }
 
     public void Heal(HealContext context)

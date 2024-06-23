@@ -3,14 +3,16 @@ using Zenject;
 public class SceneLoadService
 {
     private readonly ZenjectSceneLoader _sceneLoader;
+
+    private const string Gameplay = "Gameplay";
     
     public SceneLoadService(ZenjectSceneLoader sceneLoader)
     {
         _sceneLoader = sceneLoader;
     }
     
-    public void Load(string name)
+    public void LoadGameplayScene()
     {
-        _sceneLoader.LoadScene(name);
+        _sceneLoader.LoadScene(Gameplay);
     }
 }

@@ -7,6 +7,6 @@ public class Bootstrap : MonoBehaviour
     
     private void Awake()
     {
-        _sceneLoadService.Load("Gameplay");
+        _sceneLoadService.LoadGameplayScene();
     }
 }

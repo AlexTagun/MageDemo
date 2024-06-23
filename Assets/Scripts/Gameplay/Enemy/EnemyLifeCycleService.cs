@@ -21,6 +21,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
     [Inject] private GameplaySettings _settings;
     [Inject] private EnemyFactory _enemyFactory;
     [Inject] private EnemyMovementService _movement;
+    [Inject] private UnitService _unitService;
 
     private readonly Dictionary<EnemyView, Context> _contexts = new();
     private readonly List<EnemyView> _enemiesToDestroy = new();
@@ -94,6 +95,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
         {
             _movement.Remove(view);
             _contexts.Remove(view);
+            _unitService.Remove(view);
             Object.Destroy(view.gameObject);
         }
 

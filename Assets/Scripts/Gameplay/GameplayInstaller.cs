@@ -14,5 +14,6 @@ public class GameplayInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemyMovementService>().AsSingle();
         Container.BindInterfacesAndSelfTo<ProjectileService>().AsSingle();
+        Container.BindInterfacesAndSelfTo<LoseWindowPresenter>().AsSingle();
     }
 }

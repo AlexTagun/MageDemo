@@ -15,3 +15,4 @@ MonoBehaviour:
   _playerView: {fileID: 9222490293739186988, guid: e3f333b38cc26d44485b27b831ae64e6, type: 3}
   _cameraView: {fileID: 965669114598966482, guid: 20423d60e38865d4886002dd489aba12, type: 3}
   _gameplaySettings: {fileID: 11400000, guid: ba28e65624e432e4e96727177e551515, type: 2}
+  _loseWindow: {fileID: 83332742917226126, guid: 160457ca7a37f0e46b89128541804241, type: 3}

@@ -7,9 +7,10 @@ public class GameplayAssetsInstaller : ScriptableObjectInstaller<GameplayAssetsI
     [SerializeField] private PlayerView _playerView;
     [SerializeField] private CameraView _cameraView;
     [SerializeField] private GameplaySettings _gameplaySettings;
+    [SerializeField] private LoseWindow _loseWindow;
 
     public override void InstallBindings()
     {
-        Container.BindInstances(_playerView, _cameraView, _gameplaySettings);
+        Container.BindInstances(_playerView, _cameraView, _gameplaySettings, _loseWindow);
     }
 }

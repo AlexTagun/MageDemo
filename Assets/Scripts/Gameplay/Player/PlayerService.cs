@@ -10,6 +10,7 @@ public class PlayerService : IStart, IUpdate
     [Inject] private ProjectileService _projectileService;
     [Inject] private GameplaySettings _settings;
     [Inject] private EnemyLifeCycleService _enemyLifeCycleService;
+    [Inject] private LoseWindowPresenter _loseWindowPresenter;
 
     private PlayerMovement _movement;
     private PlayerSpellsController _spellsController;
@@ -53,7 +54,7 @@ public class PlayerService : IStart, IUpdate
 
         var deathCollection = new List<IDeath>
         {
-            new DebugDeath(id),
+            new DebugDeath(id), _loseWindowPresenter
         };
 
         _unitService.Create(PlayerView,
