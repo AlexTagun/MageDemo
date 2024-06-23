@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameplaySettings
   m_EditorClassIdentifier: 
   _playerSettings:
-    MovementSpeed: 2
+    MovementSpeed: 5
     HealthConfig:
       rid: 2636911968022953984
     _immunityAfterDamageInSeconds: 1
@@ -28,21 +28,21 @@ MonoBehaviour:
   _enemySpawnCooldownInSeconds: 0.01
   _enemySpawnMaxCount: 10
   _enemyConfigs:
-  - Weight: 33
+  - Weight: 20
     Config:
       ViewPrefab: {fileID: 225443781524190944, guid: e72b407f821c50f4186f69c448b0de91, type: 3}
       MovementSpeed: 2.5
       Damage: 10
       HealthConfig:
         rid: 2636911926735536129
-  - Weight: 33
+  - Weight: 30
     Config:
       ViewPrefab: {fileID: 225443781524190944, guid: 0474a87864da5dd4a8c503c2a251ce62, type: 3}
       MovementSpeed: 4
       Damage: 5
       HealthConfig:
         rid: 2636911993393250306
-  - Weight: 33
+  - Weight: 10
     Config:
       ViewPrefab: {fileID: 225443781524190944, guid: 294a30084bb29514fa699fd0db8f8089, type: 3}
       MovementSpeed: 2
@@ -81,7 +81,7 @@ MonoBehaviour:
       data:
         Prefab: {fileID: 811417065959287549, guid: 37de2fbfcb35f364c991a1755c513163, type: 3}
         Damage: 100
-        Radius: 2
+        Radius: 4
     - rid: 2636911993393250306
       type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
       data:

@@ -9,14 +9,14 @@ public class EnemyLifeCycleService : IStart, IUpdate
 {
     private class Context
     {
-        public float Damage;
+        public readonly float Damage;
 
         public Context(float damage)
         {
             Damage = damage;
         }
     }
-    
+
     [Inject] private CameraService _cameraService;
     [Inject] private GameplaySettings _settings;
     [Inject] private EnemyFactory _enemyFactory;
@@ -53,15 +53,34 @@ public class EnemyLifeCycleService : IStart, IUpdate
         }
 
         _timer = _settings.EnemySpawnCooldown;
-        SpawnEnemy();
+
+        if (TryGenerateRandomPositionOutCameraOnGround(out var position))
+        {
+            SpawnEnemy(position);
+        }
     }
 
-    private void SpawnEnemy()
+    private bool TryGenerateRandomPositionOutCameraOnGround(out Vector3 position)
     {
-        var center = _cameraView.transform.position;
-        var offset = Random.insideUnitCircle.normalized * _settings.EnemySpawnRadius;
-        var position = new Vector3(offset.x, 0, offset.y) + center;
+        var x = Random.value;
+        var y = Random.value;
 
+        if (Random.value > 0.5f)
+        {
+            x = x > 0.5f ? 1.1f : -0.1f;
+        }
+        else
+        {
+            y = y > 0.5f ? 1.1f : -0.1f;
+        }
+
+        var cameraPos = _cameraView.Camera.transform.position;
+        position = _cameraView.Camera.ViewportToWorldPoint(new Vector3(x, y, cameraPos.y));
+        return position.x is < 30 and > -30 && position.z is < 30 and > -30;
+    }
+
+    private void SpawnEnemy(Vector3 position)
+    {
         var config = _settings.GetRandomEnemyConfig();
 
         var view = _enemyFactory.Create(config, position, _enemiesToDestroy);
