@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2be7af3dd5460fb88bad24964b7d5c, type: 3}
+  m_Name: GameplaySettings
+  m_EditorClassIdentifier: 
+  _playerSettings:
+    MovementSpeed: 2
+    HealthConfig:
+      rid: 2636911968022953984
+    CastSpellKey: 120
+    PreviousSpellKey: 113
+    NextSpellKey: 101
+    SpellConfigs:
+    - rid: 2636911968022953985
+    - rid: 2636911993393250304
+    - rid: 2636911993393250305
+  _enemySpawnRadius: 10
+  _enemySpawnCooldownInSeconds: 1
+  _enemyConfigs:
+  - Weight: 100
+    Config:
+      ViewPrefab: {fileID: 225443781524190944, guid: e72b407f821c50f4186f69c448b0de91, type: 3}
+      MovementSpeed: 1
+      HealthConfig:
+        rid: 2636911926735536129
+  references:
+    version: 2
+    RefIds:
+    - rid: 2636911926735536129
+      type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
+      data:
+        MaxHealth: 1
+        Defence: 1
+    - rid: 2636911968022953984
+      type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
+      data:
+        MaxHealth: 100
+        Defence: 0.9
+    - rid: 2636911968022953985
+      type: {class: ChainLightningSpellConfig, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 100
+        Radius: 100
+        MaxEnemyCount: 4
+        DamageReductionForNextTargets: 0.1
+    - rid: 2636911993393250304
+      type: {class: FireBallSpellConfig, ns: , asm: Assembly-CSharp}
+      data:
+        ViewPrefab: {fileID: 6708160126830559693, guid: bd77472415cf85949bbf17d0a7e3eb70, type: 3}
+        Damage: 100
+        Speed: 3
+    - rid: 2636911993393250305
+      type: {class: FrostCircleSpellConfig, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 100
+        Radius: 2
