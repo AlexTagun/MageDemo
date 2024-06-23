@@ -16,6 +16,7 @@ MonoBehaviour:
     MovementSpeed: 2
     HealthConfig:
       rid: 2636911968022953984
+    _immunityAfterDamageInSeconds: 1
     CastSpellKey: 120
     PreviousSpellKey: 113
     NextSpellKey: 101
@@ -31,6 +32,7 @@ MonoBehaviour:
     Config:
       ViewPrefab: {fileID: 225443781524190944, guid: e72b407f821c50f4186f69c448b0de91, type: 3}
       MovementSpeed: 1
+      Damage: 10
       HealthConfig:
         rid: 2636911926735536129
   references:

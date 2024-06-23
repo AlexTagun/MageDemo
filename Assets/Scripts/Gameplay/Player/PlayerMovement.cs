@@ -18,6 +18,10 @@ public class PlayerMovement
         var movement = _movementInput.GetMovement();
         var velocity = _playerSettings.MovementSpeed * new Vector3(movement.x, 0, movement.y);
         _view.SetVelocity(velocity);
-        _view.transform.rotation = Quaternion.LookRotation(velocity);
+
+        if (velocity.magnitude > 0)
+        {
+            _view.transform.rotation = Quaternion.LookRotation(velocity);
+        }
     }
 }

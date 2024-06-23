@@ -9,9 +9,11 @@ public class PlayerService : IStart, IUpdate
     [Inject] private UnitService _unitService;
     [Inject] private ProjectileService _projectileService;
     [Inject] private GameplaySettings _settings;
+    [Inject] private EnemyLifeCycleService _enemyLifeCycleService;
 
     private PlayerMovement _movement;
     private PlayerSpellsController _spellsController;
+    private PlayerCollision _collision;
 
     public PlayerView PlayerView { get; private set; }
 
@@ -28,6 +30,9 @@ public class PlayerService : IStart, IUpdate
         _spellsController = new PlayerSpellsController(spellFactory, playerSettings);
         _spellsController.Init();
 
+        _collision = new PlayerCollision(PlayerView, _unitService, _enemyLifeCycleService, playerSettings.ImmunityTime);
+        _collision.Init();
+
         CreatePlayerUnit();
     }
 
@@ -35,6 +40,7 @@ public class PlayerService : IStart, IUpdate
     {
         _movement.Update();
         _spellsController.Update();
+        _collision.Update();
     }
 
     private void CreatePlayerUnit()

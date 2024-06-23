@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerView : MonoBehaviour, IUnitView
 {
+    public event Action<Collision> CollisionStayed;
+
     [SerializeField] private Rigidbody _rigidbody;
 
     private Transform _transform;
@@ -16,5 +19,10 @@ public class PlayerView : MonoBehaviour, IUnitView
     public void SetVelocity(Vector3 velocity)
     {
         _rigidbody.velocity = velocity;
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        CollisionStayed?.Invoke(other);
     }
 }

@@ -7,16 +7,26 @@ using Random = UnityEngine.Random;
 
 public class EnemyLifeCycleService : IStart, IUpdate
 {
+    private class Context
+    {
+        public float Damage;
+
+        public Context(float damage)
+        {
+            Damage = damage;
+        }
+    }
+    
     [Inject] private CameraService _cameraService;
     [Inject] private GameplaySettings _settings;
     [Inject] private EnemyFactory _enemyFactory;
     [Inject] private EnemyMovementService _movement;
 
+    private readonly Dictionary<EnemyView, Context> _contexts = new();
     private readonly List<EnemyView> _enemiesToDestroy = new();
 
     private CameraView _cameraView;
     private TimeSpan _timer;
-    private int _spawnedEnemies;
 
 
     void IStart.Start()
@@ -31,17 +41,18 @@ public class EnemyLifeCycleService : IStart, IUpdate
         DestroyUpdate();
     }
 
+    public float GetDamage(EnemyView enemyView) => _contexts[enemyView].Damage;
+
     private void SpawnUpdate()
     {
         _timer -= TimeSpan.FromSeconds(Time.deltaTime);
 
-        if (_timer.TotalSeconds > 0 || _spawnedEnemies >= _settings.EnemySpawnMaxCount)
+        if (_timer.TotalSeconds > 0 || _contexts.Count >= _settings.EnemySpawnMaxCount)
         {
             return;
         }
 
         _timer = _settings.EnemySpawnCooldown;
-        _spawnedEnemies++;
         SpawnEnemy();
     }
 
@@ -55,14 +66,15 @@ public class EnemyLifeCycleService : IStart, IUpdate
 
         var view = _enemyFactory.Create(config, position, _enemiesToDestroy);
         _movement.Add(view, config.MovementSpeed);
+        _contexts.Add(view, new Context(config.Damage));
     }
 
     private void DestroyUpdate()
     {
         foreach (var view in _enemiesToDestroy)
         {
-            _spawnedEnemies--;
             _movement.Remove(view);
+            _contexts.Remove(view);
             Object.Destroy(view.gameObject);
         }
 
