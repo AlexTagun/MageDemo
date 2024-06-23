@@ -28,21 +28,35 @@ MonoBehaviour:
   _enemySpawnCooldownInSeconds: 0.01
   _enemySpawnMaxCount: 10
   _enemyConfigs:
-  - Weight: 100
+  - Weight: 33
     Config:
       ViewPrefab: {fileID: 225443781524190944, guid: e72b407f821c50f4186f69c448b0de91, type: 3}
-      MovementSpeed: 1
+      MovementSpeed: 2.5
       Damage: 10
       HealthConfig:
         rid: 2636911926735536129
+  - Weight: 33
+    Config:
+      ViewPrefab: {fileID: 225443781524190944, guid: 0474a87864da5dd4a8c503c2a251ce62, type: 3}
+      MovementSpeed: 4
+      Damage: 5
+      HealthConfig:
+        rid: 2636911993393250306
+  - Weight: 33
+    Config:
+      ViewPrefab: {fileID: 225443781524190944, guid: 294a30084bb29514fa699fd0db8f8089, type: 3}
+      MovementSpeed: 2
+      Damage: 20
+      HealthConfig:
+        rid: 2636911993393250307
   references:
     version: 2
     RefIds:
     - rid: 2636911926735536129
       type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
       data:
-        MaxHealth: 1
-        Defence: 1
+        MaxHealth: 50
+        Defence: 0.7
     - rid: 2636911968022953984
       type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
       data:
@@ -68,3 +82,13 @@ MonoBehaviour:
         Prefab: {fileID: 811417065959287549, guid: 37de2fbfcb35f364c991a1755c513163, type: 3}
         Damage: 100
         Radius: 2
+    - rid: 2636911993393250306
+      type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
+      data:
+        MaxHealth: 25
+        Defence: 1
+    - rid: 2636911993393250307
+      type: {class: HealthWithDefenceConfig, ns: , asm: Assembly-CSharp}
+      data:
+        MaxHealth: 200
+        Defence: 0.5
