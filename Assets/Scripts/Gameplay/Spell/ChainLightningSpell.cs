@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ChainLightningSpell : ISpell
@@ -47,6 +48,11 @@ public class ChainLightningSpell : ISpell
             _unitService.TakeDamage(context);
             damage -= damage * _config.DamageReductionForNextTargets;
         }
+
+        var view = Object.Instantiate(_config.Prefab);
+        var positions = new List<Vector3> { _sourceView.GetPosition() };
+        positions.AddRange(targets.Select(target => target.GetPosition()));
+        view.Show(positions.ToArray());
     }
 
     private bool TryGetNearestTarget(Vector3 origin, float radius, out IUnitView nearestTarget,

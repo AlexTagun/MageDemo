@@ -11,11 +11,13 @@ public class GameplaySettings : ScriptableObjectInstaller<GameplayAssetsInstalle
     [SerializeField] private PlayerSettings _playerSettings;
     [SerializeField] private float _enemySpawnRadius;
     [SerializeField] private float _enemySpawnCooldownInSeconds;
+    [SerializeField] private float _enemySpawnMaxCount;
     [SerializeField] private List<EnemyConfigWithWeight> _enemyConfigs;
 
     public PlayerSettings PlayerSettings => _playerSettings;
     public float EnemySpawnRadius => _enemySpawnRadius;
     public TimeSpan EnemySpawnCooldown => TimeSpan.FromSeconds(_enemySpawnCooldownInSeconds);
+    public float EnemySpawnMaxCount => _enemySpawnMaxCount;
 
     public EnemyConfig GetRandomEnemyConfig()
     {

@@ -13,7 +13,7 @@ public class EnemyMovementService : IStart, IUpdate
             MovementSpeed = movementSpeed;
         }
     }
-    
+
     [Inject] private PlayerService _playerService;
 
     private readonly Dictionary<EnemyView, Context> _contexts = new();
@@ -29,7 +29,9 @@ public class EnemyMovementService : IStart, IUpdate
         foreach (var (view, context) in _contexts)
         {
             var direction = (_playerView.GetPosition() - view.GetPosition()).normalized;
-            view.SetVelocity(context.MovementSpeed * direction);
+            var velocity = context.MovementSpeed * direction;
+            view.SetVelocity(velocity);
+            view.transform.rotation = Quaternion.LookRotation(velocity);
         }
     }
 

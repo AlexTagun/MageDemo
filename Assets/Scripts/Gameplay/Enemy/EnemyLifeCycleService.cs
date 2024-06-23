@@ -16,6 +16,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
 
     private CameraView _cameraView;
     private TimeSpan _timer;
+    private int _spawnedEnemies;
 
 
     void IStart.Start()
@@ -34,12 +35,13 @@ public class EnemyLifeCycleService : IStart, IUpdate
     {
         _timer -= TimeSpan.FromSeconds(Time.deltaTime);
 
-        if (_timer.TotalSeconds > 0)
+        if (_timer.TotalSeconds > 0 || _spawnedEnemies >= _settings.EnemySpawnMaxCount)
         {
             return;
         }
 
         _timer = _settings.EnemySpawnCooldown;
+        _spawnedEnemies++;
         SpawnEnemy();
     }
 
@@ -59,6 +61,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
     {
         foreach (var view in _enemiesToDestroy)
         {
+            _spawnedEnemies--;
             _movement.Remove(view);
             Object.Destroy(view.gameObject);
         }

@@ -24,7 +24,8 @@ MonoBehaviour:
     - rid: 2636911993393250304
     - rid: 2636911993393250305
   _enemySpawnRadius: 10
-  _enemySpawnCooldownInSeconds: 1
+  _enemySpawnCooldownInSeconds: 0.01
+  _enemySpawnMaxCount: 10
   _enemyConfigs:
   - Weight: 100
     Config:
@@ -48,8 +49,9 @@ MonoBehaviour:
     - rid: 2636911968022953985
       type: {class: ChainLightningSpellConfig, ns: , asm: Assembly-CSharp}
       data:
+        Prefab: {fileID: 858197664910654909, guid: 734af37c1d0056e4e93e0664a157f9e8, type: 3}
         Damage: 100
-        Radius: 100
+        Radius: 5
         MaxEnemyCount: 4
         DamageReductionForNextTargets: 0.1
     - rid: 2636911993393250304
@@ -61,5 +63,6 @@ MonoBehaviour:
     - rid: 2636911993393250305
       type: {class: FrostCircleSpellConfig, ns: , asm: Assembly-CSharp}
       data:
+        Prefab: {fileID: 811417065959287549, guid: 37de2fbfcb35f364c991a1755c513163, type: 3}
         Damage: 100
         Radius: 2

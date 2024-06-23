@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class FrostCircleSpell : ISpell
 {
@@ -20,6 +21,9 @@ public class FrostCircleSpell : ISpell
     public void Cast()
     {
         _unitService.GetAllUnitsInCircleByRole(_sourceView.GetPosition(), _config.Radius, _roleForTargets, _buffer);
+        var view = Object.Instantiate(_config.Prefab, _sourceView.GetPosition(), Quaternion.identity);
+        view.SetRadius(_config.Radius);
+        Object.Destroy(view.gameObject, 0.3f);
 
         foreach (var unitView in _buffer)
         {
