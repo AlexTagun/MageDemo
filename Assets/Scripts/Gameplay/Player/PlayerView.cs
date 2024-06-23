@@ -20,6 +20,11 @@ public class PlayerView : MonoBehaviour, IUnitView
     {
         _rigidbody.velocity = velocity;
     }
+    
+    public void SetAngularVelocity(Vector3 velocity)
+    {
+        _rigidbody.angularVelocity = velocity;
+    }
 
     private void OnCollisionStay(Collision other)
     {

@@ -46,6 +46,7 @@ public class ProjectileService : IUpdate
 
             if (unitView == null)
             {
+                _projectilesToDestroy.Add(view);
                 return;
             }
 
