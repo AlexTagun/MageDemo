@@ -7,15 +7,15 @@ public class ChainLightningSpell : ISpell
     private readonly ChainLightningSpellConfig _config;
     private readonly List<IUnitView> _targetsBuffer = new();
     private readonly IUnitView _sourceView;
-    private readonly UnitRole _roleForTargets;
+    private readonly UnitRole _targetsRole;
     private readonly UnitService _unitService;
 
-    public ChainLightningSpell(ChainLightningSpellConfig config, IUnitView sourceView, UnitRole roleForTargets,
+    public ChainLightningSpell(ChainLightningSpellConfig config, IUnitView sourceView, UnitRole targetsRole,
         UnitService unitService)
     {
         _config = config;
         _sourceView = sourceView;
-        _roleForTargets = roleForTargets;
+        _targetsRole = targetsRole;
         _unitService = unitService;
     }
 
@@ -59,7 +59,7 @@ public class ChainLightningSpell : ISpell
         ICollection<IUnitView> exceptTargets)
     {
         nearestTarget = null;
-        _unitService.GetAllUnitsInCircleByRole(origin, radius, _roleForTargets, _targetsBuffer);
+        _unitService.GetAllUnitsInCircleByRole(origin, radius, _targetsRole, _targetsBuffer);
 
         if (_targetsBuffer.Count <= 0)
         {

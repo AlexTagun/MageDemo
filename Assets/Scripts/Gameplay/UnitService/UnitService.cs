@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class UnitService
 {
@@ -7,27 +8,32 @@ public class UnitService
     {
         public IHealth Health;
         public UnitRole UnitRole;
-        public List<IHealthChanged> HealthChangedCollection;
-        public List<IDeath> DeathCollection;
+        public List<IHealthChangedHandler> HealthChangedHandlers;
+        public List<IDeathHandler> DeathHandlers;
         public bool IsDead;
     }
 
-    private readonly HealthFactory _healthFactory = new();
+    private readonly HealthFactory _healthFactory;
     private readonly Dictionary<IUnitView, Unit> _units = new();
 
+    [Inject]
+    public UnitService(HealthFactory healthFactory)
+    {
+        _healthFactory = healthFactory;
+    }
 
     public void Create(IUnitView unitView,
         IHealthConfig healthConfig,
         UnitRole unitRole,
-        List<IHealthChanged> healthChangedCollection,
-        List<IDeath> deathCollection)
+        List<IHealthChangedHandler> healthChangedHandlers,
+        List<IDeathHandler> deathHandlers)
     {
         var unit = new Unit
         {
             Health = _healthFactory.Create(healthConfig),
             UnitRole = unitRole,
-            HealthChangedCollection = healthChangedCollection,
-            DeathCollection = deathCollection,
+            HealthChangedHandlers = healthChangedHandlers,
+            DeathHandlers = deathHandlers,
         };
 
         _units.Add(unitView, unit);
@@ -54,7 +60,7 @@ public class UnitService
 
         HealthChangedContext healthChangedContext = new(context, CalculateCurrentPercentage(health));
 
-        foreach (var healthChanged in unit.HealthChangedCollection)
+        foreach (var healthChanged in unit.HealthChangedHandlers)
             healthChanged.OnHealthChanged(healthChangedContext);
 
         if (unit.Health.GetCurrent() > 0)
@@ -62,7 +68,7 @@ public class UnitService
             return;
         }
 
-        foreach (var death in unit.DeathCollection)
+        foreach (var death in unit.DeathHandlers)
             death.OnDeath(context.Source);
 
         unit.IsDead = true;
@@ -79,7 +85,7 @@ public class UnitService
         HealContext unitHealContext = new(context.Source, context.Receiver, context.Value);
 
         HealthChangedContext healthChangedContext = new(unitHealContext, CalculateCurrentPercentage(health));
-        foreach (var healthChanged in unit.HealthChangedCollection)
+        foreach (var healthChanged in unit.HealthChangedHandlers)
             healthChanged.OnHealthChanged(healthChangedContext);
     }
 

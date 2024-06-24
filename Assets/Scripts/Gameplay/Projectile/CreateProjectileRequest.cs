@@ -7,6 +7,6 @@ public class CreateProjectileRequest
     public float Speed;
     public ProjectileView ViewPrefab;
     public float Damage;
-    public UnitRole RoleForTargets;
+    public UnitRole TargetsRole;
     public IUnitView SourceView;
 }

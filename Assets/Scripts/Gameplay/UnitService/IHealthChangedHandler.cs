@@ -1,4 +1,4 @@
-public interface IHealthChanged
+public interface IHealthChangedHandler
 {
     void OnHealthChanged(HealthChangedContext ctx);
 }

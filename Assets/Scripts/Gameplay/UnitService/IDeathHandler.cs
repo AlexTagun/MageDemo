@@ -1,4 +1,4 @@
-public interface IDeath
+public interface IDeathHandler
 {
     void OnDeath(IUnitView source);
 }

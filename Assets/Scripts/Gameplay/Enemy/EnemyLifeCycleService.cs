@@ -17,11 +17,11 @@ public class EnemyLifeCycleService : IStart, IUpdate
         }
     }
 
-    [Inject] private CameraService _cameraService;
-    [Inject] private GameplaySettings _settings;
-    [Inject] private EnemyFactory _enemyFactory;
-    [Inject] private EnemyMovementService _movement;
-    [Inject] private UnitService _unitService;
+    private readonly ICameraViewProvider _cameraViewProvider;
+    private readonly GameplaySettings _settings;
+    private readonly EnemyFactory _enemyFactory;
+    private readonly EnemyMovementService _movement;
+    private readonly UnitService _unitService;
 
     private readonly Dictionary<EnemyView, Context> _contexts = new();
     private readonly List<EnemyView> _enemiesToDestroy = new();
@@ -29,10 +29,20 @@ public class EnemyLifeCycleService : IStart, IUpdate
     private CameraView _cameraView;
     private TimeSpan _timer;
 
+    [Inject]
+    public EnemyLifeCycleService(ICameraViewProvider cameraViewProvider, GameplaySettings settings,
+        EnemyFactory enemyFactory, EnemyMovementService movement, UnitService unitService)
+    {
+        _cameraViewProvider = cameraViewProvider;
+        _settings = settings;
+        _enemyFactory = enemyFactory;
+        _movement = movement;
+        _unitService = unitService;
+    }
 
     void IStart.Start()
     {
-        _cameraView = _cameraService.CameraView;
+        _cameraView = _cameraViewProvider.GetView();
         _timer = _settings.EnemySpawnCooldown;
     }
 
@@ -55,13 +65,13 @@ public class EnemyLifeCycleService : IStart, IUpdate
 
         _timer = _settings.EnemySpawnCooldown;
 
-        if (TryGenerateRandomPositionOutCameraOnGround(out var position))
+        if (TryGenerateRandomPosition(out var position))
         {
             SpawnEnemy(position);
         }
     }
 
-    private bool TryGenerateRandomPositionOutCameraOnGround(out Vector3 position)
+    private bool TryGenerateRandomPosition(out Vector3 position)
     {
         var x = Random.value;
         var y = Random.value;

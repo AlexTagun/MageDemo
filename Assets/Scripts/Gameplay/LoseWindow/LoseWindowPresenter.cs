@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class LoseWindowPresenter : IStart, IDeath
+public class LoseWindowPresenter : IStart, IDeathHandler
 {
-    [Inject] private LoseWindow _loseWindowPrefab;
-    [Inject] private SceneLoadService _sceneLoadService;
+    private readonly Canvas _canvas;
+    private readonly LoseWindow _loseWindowPrefab;
+    private readonly SceneLoadService _sceneLoadService;
 
     private LoseWindow _loseWindow;
 
+    [Inject]
+    public LoseWindowPresenter(Canvas canvas, LoseWindow loseWindowPrefab, SceneLoadService sceneLoadService)
+    {
+        _canvas = canvas;
+        _loseWindowPrefab = loseWindowPrefab;
+        _sceneLoadService = sceneLoadService;
+    }
+
     void IStart.Start()
     {
-        var canvas = Object.FindObjectOfType<Canvas>();
-
-        _loseWindow = Object.Instantiate(_loseWindowPrefab, canvas.transform);
+        _loseWindow = Object.Instantiate(_loseWindowPrefab, _canvas.transform);
         _loseWindow.Button.onClick.AddListener(OnButtonClick);
     }
 

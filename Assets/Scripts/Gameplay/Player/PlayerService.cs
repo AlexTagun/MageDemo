@@ -2,65 +2,52 @@ using System.Collections.Generic;
 using Zenject;
 using Object = UnityEngine.Object;
 
-public class PlayerService : IStart, IUpdate
+public class PlayerService : IStart, IPlayerViewProvider
 {
-    [Inject] private IMovementInput _movementInput;
-    [Inject] private PlayerView _playerViewPrefab;
-    [Inject] private UnitService _unitService;
-    [Inject] private ProjectileService _projectileService;
-    [Inject] private GameplaySettings _settings;
-    [Inject] private EnemyLifeCycleService _enemyLifeCycleService;
-    [Inject] private LoseWindowPresenter _loseWindowPresenter;
+    private readonly PlayerView _playerViewPrefab;
+    private readonly UnitService _unitService;
+    private readonly GameplaySettings _settings;
+    private readonly LoseWindowPresenter _loseWindowPresenter;
 
-    private PlayerMovement _movement;
-    private PlayerSpellsController _spellsController;
-    private PlayerCollision _collision;
+    private PlayerView _playerView;
 
-    public PlayerView PlayerView { get; private set; }
+    [Inject]
+    public PlayerService(PlayerView playerViewPrefab, UnitService unitService, GameplaySettings settings,
+        LoseWindowPresenter loseWindowPresenter)
+    {
+        _playerViewPrefab = playerViewPrefab;
+        _unitService = unitService;
+        _settings = settings;
+        _loseWindowPresenter = loseWindowPresenter;
+    }
 
     void IStart.Start()
     {
-        var playerSettings = _settings.PlayerSettings;
-
-        PlayerView = Object.Instantiate(_playerViewPrefab);
-        PlayerView.Init();
-
-        _movement = new PlayerMovement(_movementInput, PlayerView, playerSettings);
-
-        var spellFactory = new SpellFactory(PlayerView, UnitRole.Enemy, _unitService, _projectileService);
-        _spellsController = new PlayerSpellsController(spellFactory, playerSettings);
-        _spellsController.Init();
-
-        _collision = new PlayerCollision(PlayerView, _unitService, _enemyLifeCycleService, playerSettings.ImmunityTime);
-        _collision.Init();
+        _playerView = Object.Instantiate(_playerViewPrefab);
+        _playerView.Init();
 
         CreatePlayerUnit();
     }
 
-    void IUpdate.Update()
-    {
-        _movement.Update();
-        _spellsController.Update();
-        _collision.Update();
-    }
+    PlayerView IPlayerViewProvider.GetView() => _playerView;
 
     private void CreatePlayerUnit()
     {
-        var id = PlayerView.gameObject.name;
-        var healthChangedCollection = new List<IHealthChanged>
+        var id = _playerView.gameObject.name;
+        var healthChangedHandlers = new List<IHealthChangedHandler>
         {
-            new DebugHealthChanged(id),
+            new DebugHealthChangedHandler(id),
         };
 
-        var deathCollection = new List<IDeath>
+        var deathHandlers = new List<IDeathHandler>
         {
-            new DebugDeath(id), _loseWindowPresenter
+            new DebugDeathHandler(id), _loseWindowPresenter
         };
 
-        _unitService.Create(PlayerView,
+        _unitService.Create(_playerView,
             _settings.PlayerSettings.HealthConfig,
             UnitRole.Player,
-            healthChangedCollection,
-            deathCollection);
+            healthChangedHandlers,
+            deathHandlers);
     }
 }

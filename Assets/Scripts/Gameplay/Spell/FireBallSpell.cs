@@ -2,16 +2,16 @@
 {
     private readonly FireBallSpellConfig _config;
     private readonly IUnitView _sourceView;
-    private readonly UnitRole _roleForTargets;
+    private readonly UnitRole _targetsRole;
     private readonly UnitService _unitService;
     private readonly ProjectileService _projectileService;
 
-    public FireBallSpell(FireBallSpellConfig config, IUnitView sourceView, UnitRole roleForTargets,
+    public FireBallSpell(FireBallSpellConfig config, IUnitView sourceView, UnitRole targetsRole,
         UnitService unitService, ProjectileService projectileService)
     {
         _config = config;
         _sourceView = sourceView;
-        _roleForTargets = roleForTargets;
+        _targetsRole = targetsRole;
         _unitService = unitService;
         _projectileService = projectileService;
     }
@@ -19,7 +19,7 @@
     public void Cast()
     {
         var origin = _sourceView.GetPosition();
-        if (!_unitService.TryGetNearestUnit(origin, _roleForTargets, out var nearestUnit))
+        if (!_unitService.TryGetNearestUnit(origin, _targetsRole, out var nearestUnit))
         {
             return;
         }
@@ -31,7 +31,7 @@
             Speed = _config.Speed,
             ViewPrefab = _config.ViewPrefab,
             Damage = _config.Damage,
-            RoleForTargets = _roleForTargets,
+            TargetsRole = _targetsRole,
             SourceView = _sourceView
         };
 

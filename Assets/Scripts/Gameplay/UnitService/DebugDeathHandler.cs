@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class DebugDeath : IDeath
+public class DebugDeathHandler : IDeathHandler
 {
     private readonly string _id;
 
-    public DebugDeath(string id)
+    public DebugDeathHandler(string id)
     {
         _id = id;
     }

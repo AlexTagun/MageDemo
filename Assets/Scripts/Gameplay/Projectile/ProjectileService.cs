@@ -4,24 +4,30 @@ using Zenject;
 
 public class ProjectileService : IUpdate
 {
-    [Inject] private UnitService _unitService;
-
     private class Context
     {
         public readonly float Damage;
-        public readonly UnitRole RoleForTargets;
+        public readonly UnitRole TargetsRole;
         public readonly IUnitView SourceView;
 
         public Context(CreateProjectileRequest request)
         {
             Damage = request.Damage;
-            RoleForTargets = request.RoleForTargets;
+            TargetsRole = request.TargetsRole;
             SourceView = request.SourceView;
         }
     }
 
+    private readonly UnitService _unitService;
+
     private readonly Dictionary<ProjectileView, Context> _contexts = new();
     private readonly List<ProjectileView> _projectilesToDestroy = new();
+
+    [Inject]
+    public ProjectileService(UnitService unitService)
+    {
+        _unitService = unitService;
+    }
 
     void IUpdate.Update()
     {
@@ -58,7 +64,7 @@ public class ProjectileService : IUpdate
     {
         var context = _contexts[view];
 
-        if (_unitService.IsExist(unitView) == false || context.RoleForTargets != _unitService.GetRole(unitView))
+        if (_unitService.IsExist(unitView) == false || context.TargetsRole != _unitService.GetRole(unitView))
         {
             return;
         }

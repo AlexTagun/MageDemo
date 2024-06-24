@@ -1,32 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class PlayerSpellsController
+public class PlayerSpellsController : IStart, IUpdate
 {
+    private const UnitRole TargetsRole = UnitRole.Enemy;
+    
     private readonly LinkedList<ISpell> _spells = new();
+    private readonly IPlayerViewProvider _playerViewProvider;
     private readonly SpellFactory _spellFactory;
     private readonly PlayerSettings _playerSettings;
 
     private LinkedListNode<ISpell> _selectedSpell;
 
-    public PlayerSpellsController(SpellFactory spellFactory, PlayerSettings playerSettings)
+    [Inject]
+    public PlayerSpellsController(IPlayerViewProvider playerViewProvider, SpellFactory spellFactory, GameplaySettings gameplaySettings)
     {
+        _playerViewProvider = playerViewProvider;
         _spellFactory = spellFactory;
-        _playerSettings = playerSettings;
+        _playerSettings = gameplaySettings.PlayerSettings;
     }
 
-    public void Init()
+    void IStart.Start()
     {
         foreach (var spellConfig in _playerSettings.SpellConfigs)
         {
-            var spell = _spellFactory.Create(spellConfig);
+            var spell = _spellFactory.Create(spellConfig, _playerViewProvider.GetView(), TargetsRole);
             _spells.AddLast(spell);
         }
 
         _selectedSpell = _spells.First;
     }
 
-    public void Update()
+    void IUpdate.Update()
     {
         if (Input.GetKeyDown(_playerSettings.CastSpellKey))
         {

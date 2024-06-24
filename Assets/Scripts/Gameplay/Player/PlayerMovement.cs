@@ -1,28 +1,32 @@
 ﻿using UnityEngine;
+using Zenject;
 
-public class PlayerMovement
+public class PlayerMovement : IUpdate
 {
     private readonly IMovementInput _movementInput;
-    private readonly PlayerView _view;
-    private readonly PlayerSettings _playerSettings;
+    private readonly IPlayerViewProvider _playerViewProvider;
+    private readonly PlayerSettings _settings;
 
-    public PlayerMovement(IMovementInput movementInput, PlayerView view, PlayerSettings playerSettings)
+    [Inject]
+    public PlayerMovement(IMovementInput movementInput, IPlayerViewProvider playerViewProvider,
+        GameplaySettings gameplaySettings)
     {
         _movementInput = movementInput;
-        _view = view;
-        _playerSettings = playerSettings;
+        _playerViewProvider = playerViewProvider;
+        _settings = gameplaySettings.PlayerSettings;
     }
 
-    public void Update()
+    void IUpdate.Update()
     {
+        var view = _playerViewProvider.GetView();
         var movement = _movementInput.GetMovement();
-        var velocity = _playerSettings.MovementSpeed * new Vector3(movement.x, 0, movement.y);
-        _view.SetVelocity(velocity);
-        _view.SetAngularVelocity(Vector3.zero);
+        var velocity = _settings.MovementSpeed * new Vector3(movement.x, 0, movement.y);
+        view.SetVelocity(velocity);
+        view.SetAngularVelocity(Vector3.zero);
 
         if (velocity.magnitude > 0)
         {
-            _view.transform.rotation = Quaternion.LookRotation(velocity);
+            view.transform.rotation = Quaternion.LookRotation(velocity);
         }
     }
 }

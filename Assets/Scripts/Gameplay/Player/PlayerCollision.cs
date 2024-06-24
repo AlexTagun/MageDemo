@@ -1,29 +1,32 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
-public class PlayerCollision
+public class PlayerCollision : IStart, IUpdate
 {
-    private readonly PlayerView _view;
+    private readonly IPlayerViewProvider _playerViewProvider;
     private readonly UnitService _unitService;
     private readonly EnemyLifeCycleService _enemyLifeCycleService;
     private readonly TimeSpan _immunityTime;
 
     private TimeSpan _timer;
 
-    public PlayerCollision(PlayerView view, UnitService unitService, EnemyLifeCycleService enemyLifeCycleService, TimeSpan immunityTime)
+    [Inject]
+    public PlayerCollision(IPlayerViewProvider playerViewProvider, UnitService unitService,
+        EnemyLifeCycleService enemyLifeCycleService, GameplaySettings gameplaySettings)
     {
-        _view = view;
+        _playerViewProvider = playerViewProvider;
         _unitService = unitService;
         _enemyLifeCycleService = enemyLifeCycleService;
-        _immunityTime = immunityTime;
+        _immunityTime = gameplaySettings.PlayerSettings.ImmunityTime;
     }
 
-    public void Init()
+    void IStart.Start()
     {
-        _view.CollisionStayed += OnCollisionStayed;
+        _playerViewProvider.GetView().CollisionStayed += OnCollisionStayed;
     }
 
-    public void Update()
+    void IUpdate.Update()
     {
         _timer -= TimeSpan.FromSeconds(Time.deltaTime);
     }
@@ -34,7 +37,7 @@ public class PlayerCollision
         {
             return;
         }
-        
+
         var enemyView = collision.collider.GetComponent<EnemyView>();
 
         if (enemyView == null)
@@ -43,7 +46,7 @@ public class PlayerCollision
         }
 
         var damage = _enemyLifeCycleService.GetDamage(enemyView);
-        var context = new DamageContext(enemyView, _view, damage);
+        var context = new DamageContext(enemyView, _playerViewProvider.GetView(), damage);
         _unitService.TakeDamage(context);
         _timer = _immunityTime;
     }

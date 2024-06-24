@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class DebugHealthChanged : IHealthChanged
+public class DebugHealthChangedHandler : IHealthChangedHandler
 {
     private readonly string _id;
 
-    public DebugHealthChanged(string id)
+    public DebugHealthChangedHandler(string id)
     {
         _id = id;
     }

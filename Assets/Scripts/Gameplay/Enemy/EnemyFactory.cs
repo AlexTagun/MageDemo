@@ -4,9 +4,15 @@ using Zenject;
 
 public class EnemyFactory
 {
-    [Inject] private UnitService _unitService;
+    private readonly UnitService _unitService;
 
     private int _count;
+
+    [Inject]
+    public EnemyFactory(UnitService unitService)
+    {
+        _unitService = unitService;
+    }
 
     public EnemyView Create(EnemyConfig config, Vector3 position, List<EnemyView> enemiesToDestroy)
     {
@@ -16,22 +22,22 @@ public class EnemyFactory
         var id = $"enemy_{_count}";
         view.gameObject.name = id;
 
-        var healthChangedCollection = new List<IHealthChanged>
+        var healthChangedHandlers = new List<IHealthChangedHandler>
         {
-            new DebugHealthChanged(id),
+            new DebugHealthChangedHandler(id),
         };
 
-        var deathCollection = new List<IDeath>
+        var deathHandlers = new List<IDeathHandler>
         {
-            new DebugDeath(id),
-            new AddEnemyViewToCollectionOnDeath(enemiesToDestroy, view),
+            new DebugDeathHandler(id),
+            new DeadUnitCollector<EnemyView>(enemiesToDestroy, view),
         };
 
         _unitService.Create(view,
             config.HealthConfig,
             UnitRole.Enemy,
-            healthChangedCollection,
-            deathCollection);
+            healthChangedHandlers,
+            deathHandlers);
 
         _count++;
 

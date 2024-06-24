@@ -1,28 +1,25 @@
 ﻿using System;
+using Zenject;
 
 public class SpellFactory
 {
-    private readonly IUnitView _sourceView;
-    private readonly UnitRole _roleForTargets;
     private readonly UnitService _unitService;
     private readonly ProjectileService _projectileService;
 
-    public SpellFactory(IUnitView sourceView, UnitRole roleForTargets, UnitService unitService,
-        ProjectileService projectileService)
+    [Inject]
+    public SpellFactory(UnitService unitService, ProjectileService projectileService)
     {
-        _sourceView = sourceView;
-        _roleForTargets = roleForTargets;
         _unitService = unitService;
         _projectileService = projectileService;
     }
 
-    public ISpell Create(ISpellConfig config) =>
+    public ISpell Create(ISpellConfig config, IUnitView sourceView, UnitRole targetsRole) =>
         config switch
         {
-            ChainLightningSpellConfig c => new ChainLightningSpell(c, _sourceView, _roleForTargets, _unitService),
-            FireBallSpellConfig c => new FireBallSpell(c, _sourceView, _roleForTargets, _unitService,
+            ChainLightningSpellConfig c => new ChainLightningSpell(c, sourceView, targetsRole, _unitService),
+            FireBallSpellConfig c => new FireBallSpell(c, sourceView, targetsRole, _unitService,
                 _projectileService),
-            FrostCircleSpellConfig c => new FrostCircleSpell(c, _sourceView, _roleForTargets, _unitService),
+            FrostCircleSpellConfig c => new FrostCircleSpell(c, sourceView, targetsRole, _unitService),
 
             _ => throw new ArgumentOutOfRangeException(nameof(config), config, "wrong spell config")
         };
