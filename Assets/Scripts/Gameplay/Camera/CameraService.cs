@@ -1,31 +1,21 @@
-using UnityEngine;
 using Zenject;
 
-public class CameraService : IStart, IUpdate, ICameraViewProvider
+public class CameraService : IUpdate
 {
-    private readonly IPlayerViewProvider _playerViewProvider;
-    private readonly CameraView _cameraViewPrefab;
-
-    private PlayerView _playerView;
-    private CameraView _cameraView;
+    private readonly CameraViewProvider _cameraViewProvider;
+    private readonly PlayerViewProvider _playerViewProvider;
 
     [Inject]
-    public CameraService(IPlayerViewProvider playerViewProvider, CameraView cameraViewPrefab)
+    public CameraService(CameraViewProvider cameraViewProvider, PlayerViewProvider playerViewProvider)
     {
+        _cameraViewProvider = cameraViewProvider;
         _playerViewProvider = playerViewProvider;
-        _cameraViewPrefab = cameraViewPrefab;
-    }
-
-    void IStart.Start()
-    {
-        _playerView = _playerViewProvider.GetView();
-        _cameraView = Object.Instantiate(_cameraViewPrefab, _playerView.GetPosition(), Quaternion.identity);
     }
 
     void IUpdate.Update()
     {
-        _cameraView.transform.position = _playerView.transform.position;
+        var cameraView = _cameraViewProvider.GetView();
+        var playerView = _playerViewProvider.GetView();
+        cameraView.transform.position = playerView.GetPosition();
     }
-
-    CameraView ICameraViewProvider.GetView() => _cameraView;
 }

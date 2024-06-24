@@ -19,12 +19,11 @@ MonoBehaviour:
     _immunityAfterDamageInSeconds: 1
     CastSpellKey: 120
     PreviousSpellKey: 113
-    NextSpellKey: 101
+    NextSpellKey: 119
     SpellConfigs:
     - rid: 2636911968022953985
     - rid: 2636911993393250304
     - rid: 2636911993393250305
-  _enemySpawnRadius: 10
   _enemySpawnCooldownInSeconds: 0.01
   _enemySpawnMaxCount: 10
   _enemyConfigs:
@@ -76,6 +75,7 @@ MonoBehaviour:
         ViewPrefab: {fileID: 6708160126830559693, guid: bd77472415cf85949bbf17d0a7e3eb70, type: 3}
         Damage: 100
         Speed: 3
+        OriginRadius: 1.1
     - rid: 2636911993393250305
       type: {class: FrostCircleSpellConfig, ns: , asm: Assembly-CSharp}
       data:

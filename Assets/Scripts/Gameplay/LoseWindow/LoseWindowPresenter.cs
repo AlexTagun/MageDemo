@@ -10,9 +10,9 @@ public class LoseWindowPresenter : IStart, IDeathHandler
     private LoseWindow _loseWindow;
 
     [Inject]
-    public LoseWindowPresenter(Canvas canvas, LoseWindow loseWindowPrefab, SceneLoadService sceneLoadService)
+    public LoseWindowPresenter(UiBindings uiBindings, LoseWindow loseWindowPrefab, SceneLoadService sceneLoadService)
     {
-        _canvas = canvas;
+        _canvas = uiBindings.Canvas;
         _loseWindowPrefab = loseWindowPrefab;
         _sceneLoadService = sceneLoadService;
     }

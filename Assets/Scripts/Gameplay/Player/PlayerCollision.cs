@@ -4,7 +4,7 @@ using Zenject;
 
 public class PlayerCollision : IStart, IUpdate
 {
-    private readonly IPlayerViewProvider _playerViewProvider;
+    private readonly PlayerViewProvider _playerViewProvider;
     private readonly UnitService _unitService;
     private readonly EnemyLifeCycleService _enemyLifeCycleService;
     private readonly TimeSpan _immunityTime;
@@ -12,7 +12,7 @@ public class PlayerCollision : IStart, IUpdate
     private TimeSpan _timer;
 
     [Inject]
-    public PlayerCollision(IPlayerViewProvider playerViewProvider, UnitService unitService,
+    public PlayerCollision(PlayerViewProvider playerViewProvider, UnitService unitService,
         EnemyLifeCycleService enemyLifeCycleService, GameplaySettings gameplaySettings)
     {
         _playerViewProvider = playerViewProvider;

@@ -7,14 +7,14 @@ public class PlayerSpellsController : IStart, IUpdate
     private const UnitRole TargetsRole = UnitRole.Enemy;
     
     private readonly LinkedList<ISpell> _spells = new();
-    private readonly IPlayerViewProvider _playerViewProvider;
+    private readonly PlayerViewProvider _playerViewProvider;
     private readonly SpellFactory _spellFactory;
     private readonly PlayerSettings _playerSettings;
 
     private LinkedListNode<ISpell> _selectedSpell;
 
     [Inject]
-    public PlayerSpellsController(IPlayerViewProvider playerViewProvider, SpellFactory spellFactory, GameplaySettings gameplaySettings)
+    public PlayerSpellsController(PlayerViewProvider playerViewProvider, SpellFactory spellFactory, GameplaySettings gameplaySettings)
     {
         _playerViewProvider = playerViewProvider;
         _spellFactory = spellFactory;

@@ -5,13 +5,17 @@ using Zenject;
 public class EnemyFactory
 {
     private readonly UnitService _unitService;
+    private readonly HealthBarService _healthBarService;
+    private readonly HealthBarView _healthBarPrefab;
 
     private int _count;
 
     [Inject]
-    public EnemyFactory(UnitService unitService)
+    public EnemyFactory(UnitService unitService, HealthBarService healthBarService, HealthBarAssets healthBarAssets)
     {
         _unitService = unitService;
+        _healthBarService = healthBarService;
+        _healthBarPrefab = healthBarAssets.Enemy;
     }
 
     public EnemyView Create(EnemyConfig config, Vector3 position, List<EnemyView> enemiesToDestroy)
@@ -32,6 +36,8 @@ public class EnemyFactory
             new DebugDeathHandler(id),
             new DeadUnitCollector<EnemyView>(enemiesToDestroy, view),
         };
+
+        _healthBarService.Create(view, _healthBarPrefab, healthChangedHandlers, deathHandlers);
 
         _unitService.Create(view,
             config.HealthConfig,

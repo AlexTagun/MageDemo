@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class DeadUnitCollector<T> : IDeathHandler where T : IUnitView
+public class DeadUnitCollector<T> : IDeathHandler
 {
     private readonly List<T> _collection;
     private readonly T _view;

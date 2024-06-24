@@ -16,3 +16,6 @@ MonoBehaviour:
   _cameraView: {fileID: 965669114598966482, guid: 20423d60e38865d4886002dd489aba12, type: 3}
   _gameplaySettings: {fileID: 11400000, guid: ba28e65624e432e4e96727177e551515, type: 2}
   _loseWindow: {fileID: 83332742917226126, guid: 160457ca7a37f0e46b89128541804241, type: 3}
+  _healthBarAssets:
+    Player: {fileID: 8849438264649183146, guid: 541cf520eb45fbb4caab6d565e972c8e, type: 3}
+    Enemy: {fileID: 4097743536314275977, guid: 251dfcedbc5bbda4e81d9d5b619cc5ae, type: 3}

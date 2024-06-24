@@ -1,39 +1,36 @@
 using System.Collections.Generic;
 using Zenject;
-using Object = UnityEngine.Object;
 
-public class PlayerService : IStart, IPlayerViewProvider
+public class PlayerService : IStart
 {
-    private readonly PlayerView _playerViewPrefab;
+    private readonly PlayerViewProvider _playerViewProvider;
     private readonly UnitService _unitService;
     private readonly GameplaySettings _settings;
     private readonly LoseWindowPresenter _loseWindowPresenter;
-
-    private PlayerView _playerView;
+    private readonly HealthBarView _healthBarPrefab;
+    private readonly HealthBarService _healthBarService;
 
     [Inject]
-    public PlayerService(PlayerView playerViewPrefab, UnitService unitService, GameplaySettings settings,
-        LoseWindowPresenter loseWindowPresenter)
+    public PlayerService(PlayerViewProvider playerViewProvider, UnitService unitService, GameplaySettings settings,
+        LoseWindowPresenter loseWindowPresenter, HealthBarAssets healthBarAssets, HealthBarService healthBarService)
     {
-        _playerViewPrefab = playerViewPrefab;
+        _playerViewProvider = playerViewProvider;
         _unitService = unitService;
         _settings = settings;
         _loseWindowPresenter = loseWindowPresenter;
+        _healthBarPrefab = healthBarAssets.Player;
+        _healthBarService = healthBarService;
     }
 
     void IStart.Start()
     {
-        _playerView = Object.Instantiate(_playerViewPrefab);
-        _playerView.Init();
-
         CreatePlayerUnit();
     }
 
-    PlayerView IPlayerViewProvider.GetView() => _playerView;
-
     private void CreatePlayerUnit()
     {
-        var id = _playerView.gameObject.name;
+        var view = _playerViewProvider.GetView();
+        var id = view.gameObject.name;
         var healthChangedHandlers = new List<IHealthChangedHandler>
         {
             new DebugHealthChangedHandler(id),
@@ -44,7 +41,9 @@ public class PlayerService : IStart, IPlayerViewProvider
             new DebugDeathHandler(id), _loseWindowPresenter
         };
 
-        _unitService.Create(_playerView,
+        _healthBarService.Create(view, _healthBarPrefab, healthChangedHandlers, deathHandlers);
+
+        _unitService.Create(view,
             _settings.PlayerSettings.HealthConfig,
             UnitRole.Player,
             healthChangedHandlers,

@@ -48,11 +48,12 @@ public class ProjectileService : IUpdate
 
         view.TriggerEntered += other =>
         {
+            _projectilesToDestroy.Add(view);
+
             var unitView = other.GetComponent<IUnitView>();
 
             if (unitView == null)
             {
-                _projectilesToDestroy.Add(view);
                 return;
             }
 
@@ -71,6 +72,5 @@ public class ProjectileService : IUpdate
 
         var damageContext = new DamageContext(context.SourceView, unitView, context.Damage);
         _unitService.TakeDamage(damageContext);
-        _projectilesToDestroy.Add(view);
     }
 }

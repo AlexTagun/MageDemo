@@ -17,7 +17,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
         }
     }
 
-    private readonly ICameraViewProvider _cameraViewProvider;
+    private readonly CameraViewProvider _cameraViewProvider;
     private readonly GameplaySettings _settings;
     private readonly EnemyFactory _enemyFactory;
     private readonly EnemyMovementService _movement;
@@ -30,7 +30,7 @@ public class EnemyLifeCycleService : IStart, IUpdate
     private TimeSpan _timer;
 
     [Inject]
-    public EnemyLifeCycleService(ICameraViewProvider cameraViewProvider, GameplaySettings settings,
+    public EnemyLifeCycleService(CameraViewProvider cameraViewProvider, GameplaySettings settings,
         EnemyFactory enemyFactory, EnemyMovementService movement, UnitService unitService)
     {
         _cameraViewProvider = cameraViewProvider;

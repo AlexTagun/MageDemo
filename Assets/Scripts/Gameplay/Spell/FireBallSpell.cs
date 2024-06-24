@@ -24,10 +24,11 @@
             return;
         }
 
+        var direction = (nearestUnit.GetPosition() - origin).normalized;
         var request = new CreateProjectileRequest
         {
-            Origin = origin,
-            Direction = (nearestUnit.GetPosition() - origin).normalized,
+            Origin = origin + _config.OriginRadius * direction,
+            Direction = direction,
             Speed = _config.Speed,
             ViewPrefab = _config.ViewPrefab,
             Damage = _config.Damage,

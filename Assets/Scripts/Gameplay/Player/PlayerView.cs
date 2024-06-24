@@ -6,6 +6,7 @@ public class PlayerView : MonoBehaviour, IUnitView
     public event Action<Collision> CollisionStayed;
 
     [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private float _healthBarOffsetY;
 
     private Transform _transform;
 
@@ -15,6 +16,8 @@ public class PlayerView : MonoBehaviour, IUnitView
     }
 
     public Vector3 GetPosition() => _transform.position;
+    
+    public float GetHealthBarOffsetY() => _healthBarOffsetY;
 
     public void SetVelocity(Vector3 velocity)
     {

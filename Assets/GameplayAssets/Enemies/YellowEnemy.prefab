@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 2933984743093662463}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2575013124110539873}
+  _healthBarOffsetY: 50
 --- !u!54 &2575013124110539873
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -263,7 +264,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.25
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9096947517358051527
 GameObject:
   m_ObjectHideFlags: 0

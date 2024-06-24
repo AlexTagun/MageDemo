@@ -4,11 +4,11 @@ using Zenject;
 public class PlayerMovement : IUpdate
 {
     private readonly IMovementInput _movementInput;
-    private readonly IPlayerViewProvider _playerViewProvider;
+    private readonly PlayerViewProvider _playerViewProvider;
     private readonly PlayerSettings _settings;
 
     [Inject]
-    public PlayerMovement(IMovementInput movementInput, IPlayerViewProvider playerViewProvider,
+    public PlayerMovement(IMovementInput movementInput, PlayerViewProvider playerViewProvider,
         GameplaySettings gameplaySettings)
     {
         _movementInput = movementInput;

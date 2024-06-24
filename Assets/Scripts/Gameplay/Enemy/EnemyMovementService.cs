@@ -14,13 +14,13 @@ public class EnemyMovementService : IStart, IUpdate
         }
     }
 
-    private readonly IPlayerViewProvider _playerViewProvider;
+    private readonly PlayerViewProvider _playerViewProvider;
     private readonly Dictionary<EnemyView, Context> _contexts = new();
 
     private PlayerView _playerView;
 
     [Inject]
-    public EnemyMovementService(IPlayerViewProvider playerViewProvider)
+    public EnemyMovementService(PlayerViewProvider playerViewProvider)
     {
         _playerViewProvider = playerViewProvider;
     }
